@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corazones Inclusivos - Educación para Todos</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Poppins:wght@400;600;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Navegación Principal */
+    nav {
+      background: rgba(255,255,255,0.95);
+      padding: 20px 40px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 2rem;
+      color: #FF6B9D;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+      transition: all 0.3s ease;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(3px 3px 6px rgba(0,0,0,0.2));
+    }
+
+    .logo-text {
+      font-weight: 700;
+      background: linear-gradient(135deg, #FF6B9D, #C06C84);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 25px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-menu a:hover {
+      background: linear-gradient(135deg, #FF6B9D, #C06C84);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255,107,157,0.4);
+    }
+
+    /* Botón de Accesibilidad */
+    .accessibility-btn {
+      background: #9B59B6;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(155,89,182,0.3);
+    }
+
+    .accessibility-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(155,89,182,0.5);
+    }
+
+    /* Secciones */
+    section {
+      min-height: 100vh;
+      padding: 80px 40px;
+      display: none;
+    }
+
+    section.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Portada */
+    #portada {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+    }
+
+    .portada-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 5rem;
+      margin-bottom: 20px;
+      text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+      animation: bounce 2s infinite;
+    }
+
+    .portada-subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      opacity: 0.9;
+    }
+
+    .portada-hearts {
+      font-size: 3rem;
+      margin: 20px 0;
+      animation: heartbeat 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .start-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 20px 50px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+      margin-top: 30px;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    /* Contenedor de Contenido */
+    .content-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 30px;
+      padding: 60px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .section-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 3rem;
+      color: #667eea;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    /* Tarjetas de Equipo */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .team-card {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .team-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #FF6B9D, #C06C84);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .team-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .team-role {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Menú de Juegos */
+    .games-menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 50px;
+    }
+
+    .game-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px;
+      border-radius: 25px;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s;
+    }
+
+    .game-card:hover::before {
+      left: 100%;
+    }
+
+    .game-card:hover {
+      transform: scale(1.05) rotate(-2deg);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    }
+
+    .game-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+    }
+
+    .game-title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .game-desc {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* Panel de Juego */
+    .game-panel {
+      display: none;
+      background: white;
+      border-radius: 25px;
+      padding: 40px;
+      margin-top: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .game-panel.active {
+      display: block;
+      animation: slideUp 0.5s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Botón de Audio */
+    .audio-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px auto;
+      box-shadow: 0 4px 15px rgba(52,152,219,0.3);
+      transition: all 0.3s;
+    }
+
+    .audio-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(52,152,219,0.5);
+    }
+
+    /* Controles de Accesibilidad */
+    .accessibility-panel {
+      position: fixed;
+      top: 80px;
+      right: -350px;
+      width: 300px;
+      background: white;
+      padding: 30px;
+      border-radius: 20px 0 0 20px;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.2);
+      transition: right 0.3s;
+      z-index: 999;
+    }
+
+    .accessibility-panel.active {
+      right: 0;
+    }
+
+    .accessibility-option {
+      margin: 20px 0;
+      padding: 15px;
+      background: #f5f7fa;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .accessibility-option:hover {
+      background: #e8eaf6;
+      transform: translateX(-5px);
+    }
+
+    /* Modo Alto Contraste */
+    body.high-contrast {
+      background: #000;
+      color: #FFF;
+    }
+
+    body.high-contrast .content-container {
+      background: #222;
+      color: #FFF;
+    }
+
+    body.high-contrast .game-card {
+      background: #333;
+      border: 3px solid #FFFF00;
+    }
+
+    /* Estilos para Videos */
+    .video-hero {
+      margin: 40px auto;
+      max-width: 800px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      animation: videoFloat 3s ease-in-out infinite;
+    }
+
+    .video-hero video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @keyframes videoFloat {
+      0%, 100% {
+        transform: translateY(0px);
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      }
+      50% {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+      }
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .video-card video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #f0f0f0;
+    }
+
+    .video-card-content {
+      padding: 20px;
+    }
+
+    .video-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .video-card-desc {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .video-play-overlay {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .video-play-overlay::after {
+      content: '▶️';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      opacity: 0.8;
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+
+    .video-play-overlay:hover::after {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+
+    /* Modal de Video */
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .video-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .video-modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
+      background: #000;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+      animation: modalSlideIn 0.4s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        transform: scale(0.8) translateY(50px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .video-modal-content video {
+      width: 100%;
+      max-width: 900px;
+      display: block;
+    }
+
+    .video-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: #FF6B9D;
+      border: none;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(255,107,157,0.5);
+      z-index: 10;
+    }
+
+    .video-modal-close:hover {
+      background: #FF4B7D;
+      transform: rotate(90deg) scale(1.1);
+      box-shadow: 0 6px 20px rgba(255,107,157,0.7);
+    }
+
+    .video-modal-minimize {
+      position: absolute;
+      top: 15px;
+      right: 70px;
+      background: #667eea;
+      border: none;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(102,126,234,0.5);
+      z-index: 10;
+    }
+
+    .video-modal-minimize:hover {
+      background: #5568d3;
+      transform: scale(1.1);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .portada-title {
+        font-size: 3rem;
+      }
+
+      .nav-menu {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .content-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navegación -->
+  <nav>
+    <div class="logo">
+      <img src="VIDEOS/logo_Mesa de trabajo 1.png" alt="Corazones Inclusivos Logo">
+      <span class="logo-text">Corazones Inclusivos</span>
+    </div>
+    <ul class="nav-menu">
+      <li><a href="#" onclick="showSection('portada', event)">Inicio</a></li>
+      <li><a href="#" onclick="showSection('presentacion', event)">Presentación</a></li>
+      <li><a href="#" onclick="showSection('nosotras', event)">Sobre Nosotras</a></li>
+      <li><a href="#" onclick="showSection('braille', event)">Braille</a></li>
+      <li><a href="#" onclick="showSection('senas', event)">Lenguaje de Señas</a></li>
+      <li><a href="#" onclick="showSection('juegos', event)">Juegos</a></li>
+    </ul>
+    <button class="accessibility-btn" onclick="toggleAccessibility()">
+      ♿ Accesibilidad
+    </button>
+  </nav>
+
+  <!-- Panel de Accesibilidad -->
+  <div class="accessibility-panel" id="accessibilityPanel">
+    <h3 style="margin-bottom: 20px;">🌈 Opciones de Accesibilidad</h3>
+
+    <div class="accessibility-option" onclick="toggleHighContrast()">
+      👁️ <strong>Alto Contraste</strong>
+      <p style="font-size: 0.8rem; margin-top: 5px;">Para mejor visibilidad</p>
+    </div>
+
+    <div class="accessibility-option" onclick="enableAudioDescriptions()">
+      🔊 <strong>Descripciones de Audio</strong>
+      <p style="font-size: 0.8rem; margin-top: 5px;">Narración de contenido</p>
+    </div>
+
+    <div class="accessibility-option" onclick="toggleSubtitles()">
+      📝 <strong>Subtítulos Visuales</strong>
+      <p style="font-size: 0.8rem; margin-top: 5px;">Texto para personas sordas</p>
+    </div>
+
+    <div class="accessibility-option" onclick="increaseFontSize()">
+      🔤 <strong>Aumentar Tamaño</strong>
+      <p style="font-size: 0.8rem; margin-top: 5px;">Texto más grande</p>
+    </div>
+  </div>
+
+  <!-- PORTADA -->
+  <section id="portada" class="active">
+    <div class="portada-hearts">❤️💛💚💙💜</div>
+    <h1 class="portada-title">Corazones Inclusivos</h1>
+    <p class="portada-subtitle">Educación para Todos los Niños, Sin Barreras</p>
+
+    <!-- Botón para ver video de bienvenida -->
+    <button class="start-btn" onclick="openVideoModal()" style="margin: 30px auto; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      🎬 Ver Video de Bienvenida
+    </button>
+
+    <p style="font-size: 1.2rem; max-width: 600px; line-height: 1.6;">
+      Un espacio donde cada niño, sin importar sus capacidades, puede aprender, jugar y crecer.
+    </p>
+    <button class="start-btn" onclick="showSection('presentacion', event)">
+      Comenzar Aventura 🚀
+    </button>
+  </section>
+
+  <!-- PRESENTACIÓN -->
+  <section id="presentacion">
+    <div class="content-container">
+      <h2 class="section-title">📖 Presentación del laboratorio</h2>
+
+      <button class="audio-btn" onclick="playAudio('presentacion')">
+        🔊 Escuchar Presentación
+      </button>
+
+      <div style="font-size: 1.1rem; line-height: 1.8; color: #333; text-align: center; margin-top: 30px;">
+        <p style="margin-bottom: 20px;">
+          <strong>Corazones Inclusivos</strong> es un laboratorio educativo diseñado para garantizar que
+          <strong>todos los niños</strong> tengan acceso a herramientas de aprendizaje de calidad.
+        </p>
+
+        <p style="margin-bottom: 20px;">
+          🎯 <strong>Nuestra Misión:</strong> Crear juegos cognitivos que sean accesibles para niños:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 30px 0;">
+          <div style="padding: 20px; background: linear-gradient(135deg, #FF6B9D, #C06C84); color: white; border-radius: 15px;">
+            <div style="font-size: 3rem;">👁️</div>
+            <strong>Con discapacidad visual</strong>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Audio descriptivo completo</p>
+          </div>
+
+          <div style="padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px;">
+            <div style="font-size: 3rem;">👂</div>
+            <strong>Con discapacidad auditiva</strong>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Ilustraciones claras y subtítulos</p>
+          </div>
+
+          <div style="padding: 20px; background: linear-gradient(135deg, #f093fb, #f5576c); color: white; border-radius: 15px;">
+            <div style="font-size: 3rem;">🧩</div>
+            <strong>Con diversidad cognitiva</strong>
+            <p style="font-size: 0.9rem; margin-top: 10px;">Instrucciones simples y claras</p>
+          </div>
+        </div>
+
+        <p style="margin-top: 30px; font-size: 1.3rem; color: #667eea;">
+          💚 <em>"La educación es un derecho de todos, sin excepciones"</em>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOBRE NOSOTRAS -->
+  <section id="nosotras">
+    <div class="content-container">
+      <h2 class="section-title">👩‍🏫 Nuestro Equipo</h2>
+
+      <button class="audio-btn" onclick="playAudio('equipo')">
+        🔊 Conocer al Equipo
+      </button>
+
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">👩🏻‍💼</div>
+          <div class="team-name">Erika Yuliana López Martínez</div>
+          <div class="team-role">Licenciatura en Educación Infantil</div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">👩🏽‍💼</div>
+          <div class="team-name">Katherine Díaz Sánchez</div>
+          <div class="team-role">Licenciatura en Educación Infantil</div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">👩🏿‍💼</div>
+          <div class="team-name">Yeimi Lorena Ibarra Hernández</div>
+          <div class="team-role">Licenciatura en Educación Infantil</div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">👩‍💼</div>
+          <div class="team-name">Yesica Johanna García Aldana</div>
+          <div class="team-role">Licenciatura en Educación Infantil</div>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar">👩🏼‍💼</div>
+          <div class="team-name">Adriana Navas</div>
+          <div class="team-role">Licenciatura en Educación Infantil</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 50px; text-align: center; font-size: 1.1rem; line-height: 1.8;">
+        <p>
+          Somos un equipo de docentes comprometidas con la <strong>inclusión educativa</strong>.
+          Creemos que cada niño merece las mismas oportunidades de aprendizaje, adaptadas a sus necesidades únicas.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAILLE -->
+  <section id="braille">
+    <div class="content-container">
+      <h2 class="section-title">⠃ ¿Qué es el Braille?</h2>
+
+      <button class="audio-btn" onclick="playAudio('braille')">
+        🔊 Aprender sobre Braille
+      </button>
+
+      <div style="text-align: center; margin: 40px 0;">
+        <div style="font-size: 8rem; color: #667eea;">⠃⠗⠁⠊⠇⠇⠑</div>
+        <p style="font-size: 1.5rem; margin-top: 20px;">BRAILLE</p>
+      </div>
+
+      <div style="font-size: 1.1rem; line-height: 1.8; margin-top: 30px;">
+        <p style="margin-bottom: 20px;">
+          El <strong>Braille</strong> es un sistema de lectura y escritura táctil diseñado para personas ciegas o con discapacidad visual grave.
+        </p>
+
+        <p style="margin-bottom: 20px;">
+          Fue creado por <strong>Louis Braille</strong> en 1824, y consiste en celdas de seis puntos en relieve que representan letras, números y símbolos.
+        </p>
+
+        <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 30px; border-radius: 20px; margin: 30px 0;">
+          <h3 style="margin-bottom: 20px;">✨ Importancia del Braille</h3>
+          <ul style="text-align: left; max-width: 600px; margin: 0 auto; line-height: 2;">
+            <li>Permite la alfabetización independiente</li>
+            <li>Desarrolla habilidades de lectura y escritura</li>
+            <li>Facilita el acceso a la educación</li>
+            <li>Promueve la inclusión social</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Videos sobre Braille -->
+      <h3 style="text-align: center; font-size: 1.8rem; margin: 50px 0 30px; color: #667eea;">
+        📹 Aprende más sobre el Braille
+      </h3>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/dos.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Introducción al Braille</div>
+            <div class="video-card-desc">Descubre los fundamentos del sistema Braille y su historia.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/tres.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">El Alfabeto Braille</div>
+            <div class="video-card-desc">Aprende las letras y números del sistema Braille.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/cuatro.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Escribiendo en Braille</div>
+            <div class="video-card-desc">Cómo escribir y leer textos en Braille.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/cinco.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Braille en la Vida Diaria</div>
+            <div class="video-card-desc">Aplicaciones prácticas del Braille en el día a día.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/seis.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Tecnología y Braille</div>
+            <div class="video-card-desc">Herramientas modernas que utilizan el sistema Braille.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LENGUAJE DE SEÑAS -->
+  <section id="senas">
+    <div class="content-container">
+      <h2 class="section-title">🤟 Lenguaje de Señas</h2>
+
+      <button class="audio-btn" onclick="playAudio('senas')">
+        🔊 Escuchar sobre Lenguaje de Señas
+      </button>
+
+      <div style="text-align: center; margin: 40px 0;">
+        <div style="font-size: 6rem;">🤟👋✋</div>
+        <p style="font-size: 1.5rem; margin-top: 20px;">COMUNICACIÓN VISUAL</p>
+      </div>
+
+      <div style="font-size: 1.1rem; line-height: 1.8; margin-top: 30px; text-align: center;">
+        <p style="margin-bottom: 20px;">
+          El <strong>Lenguaje de Señas</strong> es un sistema de comunicación visual que utiliza gestos, expresiones faciales y movimientos corporales para transmitir mensajes.
+        </p>
+
+        <p style="margin-bottom: 20px;">
+          Es la lengua natural de la <strong>comunidad sorda</strong>, permitiendo una comunicación completa y expresiva sin necesidad del habla.
+        </p>
+
+        <div style="background: linear-gradient(135deg, #FF6B9D, #C06C84); color: white; padding: 30px; border-radius: 20px; margin: 30px 0;">
+          <h3 style="margin-bottom: 20px;">✨ Importancia del Lenguaje de Señas</h3>
+          <ul style="text-align: left; max-width: 600px; margin: 0 auto; line-height: 2;">
+            <li>Facilita la comunicación para personas sordas</li>
+            <li>Promueve la inclusión social y educativa</li>
+            <li>Es una lengua completa con gramática propia</li>
+            <li>Fortalece la identidad de la comunidad sorda</li>
+            <li>Permite el acceso a la información y educación</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Videos sobre Lenguaje de Señas -->
+      <h3 style="text-align: center; font-size: 1.8rem; margin: 50px 0 30px; color: #FF6B9D;">
+        📹 Aprende Lenguaje de Señas
+      </h3>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/siete.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Introducción a las Señas</div>
+            <div class="video-card-desc">Primeros pasos en el lenguaje de señas y saludos básicos.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/ocho.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">El Alfabeto en Señas</div>
+            <div class="video-card-desc">Aprende el alfabeto dactilológico letra por letra.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/nueve.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Conversaciones Básicas</div>
+            <div class="video-card-desc">Frases comunes y conversaciones cotidianas en señas.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/diez.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Señas para la Familia</div>
+            <div class="video-card-desc">Aprende a comunicar sobre tu familia y relaciones.</div>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-play-overlay">
+            <video controls>
+              <source src="VIDEOS/once.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-card-content">
+            <div class="video-card-title">Números y Colores en Señas</div>
+            <div class="video-card-desc">Práctica de números y colores en lenguaje de señas.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Video de Bienvenida -->
+  <div class="video-modal" id="videoModal">
+    <div class="video-modal-content">
+      <button class="video-modal-minimize" onclick="minimizeVideo()" title="Minimizar">─</button>
+      <button class="video-modal-close" onclick="closeVideoModal()" title="Cerrar">✕</button>
+      <video id="welcomeVideo" controls autoplay>
+        <source src="VIDEOS/uno.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+      </video>
+    </div>
+  </div>
+
+  <!-- JUEGOS -->
+  <section id="juegos">
+    <div class="content-container">
+      <h2 class="section-title">🎮 Juegos Cognitivos Inclusivos</h2>
+
+      <p style="text-align: center; font-size: 1.2rem; margin-bottom: 40px;">
+        Selecciona un juego adaptado para todos los niños
+      </p>
+
+      <div class="games-menu">
+        <div class="game-card" onclick="showGame('figuras')">
+          <div class="game-icon">🔷🔶🔵</div>
+          <div class="game-title">Figuras Geométricas</div>
+          <div class="game-desc">Aprende formas con sonido, color y tacto</div>
+        </div>
+
+        <div class="game-card" onclick="showGame('numeros')">
+          <div class="game-icon">1️⃣2️⃣3️⃣</div>
+          <div class="game-title">Números Divertidos</div>
+          <div class="game-desc">Cuenta y aprende con audio y animaciones</div>
+        </div>
+
+        <div class="game-card" onclick="showGame('rompecabezas')">
+          <div class="game-icon">🧩</div>
+          <div class="game-title">Rompecabezas Inclusivo</div>
+          <div class="game-desc">Arma imágenes con ayuda visual y auditiva</div>
+        </div>
+      </div>
+
+      <!-- Panel Figuras Geométricas -->
+      <div id="game-figuras" class="game-panel">
+        <h3 style="font-size: 2rem; text-align: center; margin-bottom: 30px;">🔷 Figuras Geométricas</h3>
+        <button class="audio-btn" onclick="playGameAudio('figuras', 'intro')">
+          🔊 Escuchar Instrucciones
+        </button>
+        <div id="figuras-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 30px; margin-top: 30px;">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Panel Números -->
+      <div id="game-numeros" class="game-panel">
+        <h3 style="font-size: 2rem; text-align: center; margin-bottom: 30px;">🔢 Números Divertidos</h3>
+        <button class="audio-btn" onclick="playGameAudio('numeros', 'intro')">
+          🔊 Escuchar Instrucciones
+        </button>
+        <div id="numeros-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; margin-top: 30px;">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Panel Rompecabezas -->
+      <div id="game-rompecabezas" class="game-panel">
+        <h3 style="font-size: 2rem; text-align: center; margin-bottom: 30px;">🧩 Rompecabezas Inclusivo</h3>
+        <button class="audio-btn" onclick="playGameAudio('rompecabezas', 'intro')">
+          🔊 Escuchar Instrucciones
+        </button>
+        <div id="rompecabezas-container" style="margin-top: 30px;">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Variables globales
+    let audioEnabled = false;
+    let subtitlesEnabled = false;
+    let currentFontSize = 16;
+    let audioContext;
+    let currentSection = 'portada';
+
+    // Navegación entre secciones
+    function showSection(sectionId, event) {
+      if (event) event.preventDefault();
+
+      document.querySelectorAll('section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(sectionId).classList.add('active');
+      currentSection = sectionId;
+
+      // Anunciar cambio de sección para accesibilidad
+      if (audioEnabled) {
+        speakText(`Sección ${sectionId}`);
+      }
+
+      // Scroll suave al inicio
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Toggle panel de accesibilidad
+    function toggleAccessibility() {
+      const panel = document.getElementById('accessibilityPanel');
+      panel.classList.toggle('active');
+    }
+
+    // Alto contraste
+    function toggleHighContrast() {
+      document.body.classList.toggle('high-contrast');
+      const isActive = document.body.classList.contains('high-contrast');
+      speakText(isActive ? 'Modo alto contraste activado' : 'Modo alto contraste desactivado');
+    }
+
+    // Habilitar audio
+    function enableAudioDescriptions() {
+      audioEnabled = !audioEnabled;
+      speakText(audioEnabled ? 'Descripciones de audio activadas' : 'Descripciones de audio desactivadas');
+    }
+
+    // Subtítulos
+    function toggleSubtitles() {
+      subtitlesEnabled = !subtitlesEnabled;
+      speakText(subtitlesEnabled ? 'Subtítulos activados' : 'Subtítulos desactivados');
+    }
+
+    // Aumentar tamaño de fuente
+    function increaseFontSize() {
+      currentFontSize += 2;
+      document.body.style.fontSize = currentFontSize + 'px';
+      speakText('Tamaño de texto aumentado');
+    }
+
+    // Sistema de síntesis de voz
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'es-ES';
+        utterance.rate = 0.9;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Reproducir audio de secciones
+    function playAudio(section) {
+      const audioTexts = {
+        presentacion: 'Corazones Inclusivos es un laboratorio educativo diseñado para garantizar que todos los niños tengan acceso a herramientas de aprendizaje de calidad. Nuestra misión es crear juegos cognitivos que sean accesibles para niños con discapacidad visual, auditiva y diversidad cognitiva.',
+        equipo: 'Somos un equipo de cinco docentes comprometidas con la inclusión educativa: Erika López, Katherine Díaz, Yeimi Ibarra, Yessica García y Adriana Navas. Creemos que cada niño merece las mismas oportunidades de aprendizaje.',
+        braille: 'El Braille es un sistema de lectura táctil creado por Louis Braille en 1824. Consiste en celdas de seis puntos en relieve que representan letras y números, permitiendo a las personas ciegas leer de manera independiente.',
+        senas: 'El Lenguaje de Señas es un sistema de comunicación visual que utiliza gestos, expresiones faciales y movimientos corporales. Es la lengua natural de la comunidad sorda, permitiendo una comunicación completa y expresiva sin necesidad del habla. Promueve la inclusión social y educativa de las personas sordas.'
+      };
+      speakText(audioTexts[section]);
+    }
+
+    // Mostrar juego específico
+    function showGame(gameType) {
+      // Ocultar todos los paneles de juegos
+      document.querySelectorAll('.game-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+
+      // Mostrar el panel seleccionado
+      document.getElementById(`game-${gameType}`).classList.add('active');
+
+      // Inicializar juego
+      initGame(gameType);
+
+      speakText(`Juego de ${gameType} seleccionado`);
+    }
+
+    // Audio de juegos
+    function playGameAudio(game, type) {
+      const instructions = {
+        figuras: 'Haz clic en cada figura para escuchar su nombre y aprender sobre ella. Las figuras tienen diferentes colores y formas.',
+        numeros: 'Haz clic en cada número para escuchar su nombre. Cuenta del uno al diez con nosotros.',
+        rompecabezas: 'Arrastra las piezas para completar la imagen. Cada pieza emitirá un sonido cuando esté en el lugar correcto.'
+      };
+      speakText(instructions[game]);
+    }
+
+    // Inicializar juegos
+    function initGame(gameType) {
+      switch(gameType) {
+        case 'figuras':
+          initFigurasGame();
+          break;
+        case 'numeros':
+          initNumerosGame();
+          break;
+        case 'rompecabezas':
+          initRompecabezasGame();
+          break;
+      }
+    }
+
+    // Juego de Figuras Geométricas
+    function initFigurasGame() {
+      const container = document.getElementById('figuras-container');
+      const figuras = [
+        { emoji: '🔴', nombre: 'Círculo', color: '#FF6B6B' },
+        { emoji: '🔵', nombre: 'Círculo Azul', color: '#4ECDC4' },
+        { emoji: '🟥', nombre: 'Cuadrado Rojo', color: '#FF6B6B' },
+        { emoji: '🟦', nombre: 'Cuadrado Azul', color: '#4ECDC4' },
+        { emoji: '🔺', nombre: 'Triángulo', color: '#FFD93D' },
+        { emoji: '⬟', nombre: 'Hexágono', color: '#9B59B6' }
+      ];
+
+      container.innerHTML = '';
+      figuras.forEach(figura => {
+        const card = document.createElement('div');
+        card.style.cssText = `
+          background: ${figura.color};
+          padding: 30px;
+          border-radius: 20px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        `;
+        card.innerHTML = `
+          <div style="font-size: 5rem; margin-bottom: 10px;">${figura.emoji}</div>
+          <div style="color: white; font-weight: 700; font-size: 1.2rem;">${figura.nombre}</div>
+        `;
+        card.onclick = () => {
+          speakText(`Esto es un ${figura.nombre}`);
+          card.style.transform = 'scale(1.1) rotate(5deg)';
+          setTimeout(() => {
+            card.style.transform = 'scale(1) rotate(0deg)';
+          }, 300);
+        };
+        container.appendChild(card);
+      });
+    }
+
+    // Juego de Números
+    function initNumerosGame() {
+      const container = document.getElementById('numeros-container');
+      const numeros = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
+      const nombres = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez'];
+      const colores = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#9B59B6', '#FF6B9D', '#FFA502', '#26de81', '#4b7bec', '#fd79a8', '#6c5ce7'];
+
+      container.innerHTML = '';
+      numeros.forEach((num, index) => {
+        const card = document.createElement('div');
+        card.style.cssText = `
+          background: ${colores[index]};
+          padding: 25px;
+          border-radius: 15px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        `;
+        card.innerHTML = `
+          <div style="font-size: 4rem;">${num}</div>
+          <div style="color: white; font-weight: 700; margin-top: 10px;">${nombres[index]}</div>
+        `;
+        card.onclick = () => {
+          speakText(`Número ${nombres[index]}`);
+          card.style.transform = 'scale(1.2)';
+          setTimeout(() => {
+            card.style.transform = 'scale(1)';
+          }, 300);
+        };
+        container.appendChild(card);
+      });
+    }
+
+    // Juego de Rompecabezas
+    function initRompecabezasGame() {
+      const container = document.getElementById('rompecabezas-container');
+      container.innerHTML = `
+        <div style="text-align: center;">
+          <p style="font-size: 1.2rem; margin-bottom: 30px;">
+            Arrastra las piezas para completar la imagen del corazón
+          </p>
+          <div id="puzzle-area" style="display: grid; grid-template-columns: repeat(2, 200px); gap: 10px; justify-content: center;">
+            <div class="puzzle-piece" data-position="0" style="background: linear-gradient(135deg, #FF6B6B, #C06C84); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
+              ❤️
+            </div>
+            <div class="puzzle-piece" data-position="1" style="background: linear-gradient(135deg, #4ECDC4, #44A08D); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
+              💚
+            </div>
+            <div class="puzzle-piece" data-position="2" style="background: linear-gradient(135deg, #FFD93D, #F6B93B); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
+              💛
+            </div>
+            <div class="puzzle-piece" data-position="3" style="background: linear-gradient(135deg, #9B59B6, #8E44AD); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
+              💜
+            </div>
+          </div>
+          <button class="audio-btn" onclick="checkPuzzleComplete()" style="margin-top: 30px;">
+            ✅ Verificar Rompecabezas
+          </button>
+        </div>
+      `;
+
+      // Simple drag and drop
+      const pieces = document.querySelectorAll('.puzzle-piece');
+      pieces.forEach(piece => {
+        piece.addEventListener('click', () => {
+          speakText('Pieza del rompecabezas');
+        });
+      });
+    }
+
+    function checkPuzzleComplete() {
+      speakText('¡Excelente trabajo! Has completado el rompecabezas de corazones inclusivos');
+      // Animación de celebración
+      const pieces = document.querySelectorAll('.puzzle-piece');
+      pieces.forEach((piece, index) => {
+        setTimeout(() => {
+          piece.style.transform = 'scale(1.1) rotate(5deg)';
+          setTimeout(() => {
+            piece.style.transform = 'scale(1) rotate(0deg)';
+          }, 300);
+        }, index * 100);
+      });
+    }
+
+    // Control del Modal de Video
+    let videoModalShown = false;
+
+    function openVideoModal() {
+      const modal = document.getElementById('videoModal');
+      const video = document.getElementById('welcomeVideo');
+
+      modal.classList.add('active');
+      video.play();
+      videoModalShown = true;
+
+      // Anunciar apertura para accesibilidad
+      if (audioEnabled) {
+        speakText('Video de bienvenida abierto');
+      }
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('videoModal');
+      const video = document.getElementById('welcomeVideo');
+
+      modal.classList.remove('active');
+      video.pause();
+
+      // Anunciar cierre para accesibilidad
+      if (audioEnabled) {
+        speakText('Video cerrado');
+      }
+    }
+
+    function minimizeVideo() {
+      closeVideoModal();
+    }
+
+    // Cerrar modal al hacer clic fuera del video
+    document.addEventListener('click', (e) => {
+      const modal = document.getElementById('videoModal');
+      if (e.target === modal) {
+        closeVideoModal();
+      }
+    });
+
+    // Abrir video automáticamente al cargar (primera vez)
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Corazones Inclusivos cargado correctamente');
+
+      // Abrir video de bienvenida después de 1 segundo
+      setTimeout(() => {
+        if (!videoModalShown) {
+          openVideoModal();
+        }
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
