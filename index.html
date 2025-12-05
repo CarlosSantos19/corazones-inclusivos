@@ -1148,10 +1148,13 @@
     <div class="video-modal-content">
       <button class="video-modal-minimize" onclick="minimizeVideo()" title="Minimizar">─</button>
       <button class="video-modal-close" onclick="closeVideoModal()" title="Cerrar">✕</button>
-      <video id="welcomeVideo" controls autoplay>
+      <video id="welcomeVideo" controls autoplay muted>
         <source src="VIDEOS/uno.mp4" type="video/mp4">
         Tu navegador no soporta videos HTML5.
       </video>
+      <button onclick="unmuteVideo()" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #FF6B9D; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(255,107,157,0.4); transition: all 0.3s; z-index: 20;">
+        🔊 Activar Sonido
+      </button>
     </div>
   </div>
 
@@ -1712,6 +1715,12 @@
 
     function minimizeVideo() {
       closeVideoModal();
+    }
+
+    function unmuteVideo() {
+      const video = document.getElementById('welcomeVideo');
+      video.muted = false;
+      video.volume = 0.8;
     }
 
     // Cerrar modal al hacer clic fuera del video
