@@ -1387,7 +1387,24 @@
         [numerosArray[i], numerosArray[j]] = [numerosArray[j], numerosArray[i]];
       }
 
-      container.innerHTML = '<p style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; color: #667eea;">Arrastra los números para ordenarlos del 1 al 10</p>';
+      container.innerHTML = `
+        <div style="text-align: center; margin-bottom: 30px;">
+          <p style="font-size: 1.2rem; font-weight: 700; color: #667eea; margin-bottom: 15px;">
+            🎯 Ordena los números del 1 al 10
+          </p>
+          <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 15px; max-width: 500px; margin: 0 auto;">
+            <p style="font-size: 1rem; margin-bottom: 10px;">
+              📱 <strong>Cómo jugar:</strong>
+            </p>
+            <ol style="text-align: left; margin: 0 auto; max-width: 400px; line-height: 1.8;">
+              <li>Haz clic y <strong>mantén presionado</strong> un número</li>
+              <li><strong>Arrastra</strong> el número sobre otro número</li>
+              <li><strong>Suelta</strong> para intercambiar posiciones</li>
+              <li>Repite hasta ordenarlos del 1️⃣ al 🔟</li>
+            </ol>
+          </div>
+        </div>
+      `;
 
       numerosArray.forEach((numero, index) => {
         const card = document.createElement('div');
