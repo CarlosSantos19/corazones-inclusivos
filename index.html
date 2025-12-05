@@ -787,6 +787,21 @@
           Bienvenidos, Al laboratorio corazones inclusivos. Daremos inicio de la presentación de las docentes en formación de la Licenciatura en Educación Infantil, la cual se demostrará, sensibilidad y compromiso pedagógico. Desde sus primeras intervenciones, expresará con claridad los propósitos formativos y destacaremos la importancia de una enseñanza humanizada, inclusiva y centrada en las necesidades de la primera infancia.
         </p>
       </div>
+
+      <!-- Videos de Presentación -->
+      <h3 style="text-align: center; font-size: 1.8rem; margin: 50px 0 30px; color: #667eea;">
+        📹 Presentación
+      </h3>
+
+      <div class="video-grid">
+        <div class="video-card">
+          <iframe src="https://www.youtube.com/embed/-UFzjW9JaSA" allowfullscreen></iframe>
+          <div class="video-card-content">
+            <div class="video-card-title">Katherine Díaz - Presentación</div>
+            <div class="video-card-desc">Presentación personal en lengua de señas.</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -963,13 +978,6 @@
           </div>
         </div>
 
-        <div class="video-card">
-          <iframe src="https://www.youtube.com/embed/-UFzjW9JaSA" allowfullscreen></iframe>
-          <div class="video-card-content">
-            <div class="video-card-title">Katherine Díaz - Presentación</div>
-            <div class="video-card-desc">Presentación personal en lengua de señas.</div>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -1305,10 +1313,7 @@
     <div class="video-modal-content">
       <button class="video-modal-minimize" onclick="minimizeVideo()" title="Minimizar">─</button>
       <button class="video-modal-close" onclick="closeVideoModal()" title="Cerrar">✕</button>
-      <video id="welcomeVideo" controls autoplay muted>
-        <source src="VIDEOS/uno.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
-      </video>
+      <iframe id="welcomeVideo" src="https://www.youtube.com/embed/6erS4gOq7mo?autoplay=1&mute=1" allowfullscreen style="width: 100%; max-width: 900px; height: 506px; border: none;"></iframe>
       <button onclick="unmuteVideo()" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: #FF6B9D; color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(255,107,157,0.4); transition: all 0.3s; z-index: 20;">
         🔊 Activar Sonido
       </button>
