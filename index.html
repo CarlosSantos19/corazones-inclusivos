@@ -1303,8 +1303,8 @@
     function playGameAudio(game, type) {
       const instructions = {
         figuras: 'Haz clic en cada figura para escuchar su nombre y aprender sobre ella. Las figuras tienen diferentes colores y formas.',
-        numeros: 'Haz clic en cada número para escuchar su nombre. Cuenta del uno al diez con nosotros.',
-        rompecabezas: 'Arrastra las piezas para completar la imagen. Cada pieza emitirá un sonido cuando esté en el lugar correcto.'
+        numeros: 'Arrastra los números para ordenarlos del uno al diez. Los números están mezclados, organízalos en el orden correcto para ganar.',
+        rompecabezas: 'Arrastra las piezas de corazones para organizarlas en el orden correcto. El orden es: corazón rojo, corazón verde, corazón amarillo, corazón morado. Intercambia las piezas arrastrando una sobre otra.'
       };
       speakText(instructions[game]);
     }
@@ -1364,88 +1364,247 @@
     }
 
     // Juego de Números
+    let numerosArray = [];
+    let draggedNumber = null;
+
     function initNumerosGame() {
       const container = document.getElementById('numeros-container');
       const numeros = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
       const nombres = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez'];
       const colores = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#9B59B6', '#FF6B9D', '#FFA502', '#26de81', '#4b7bec', '#fd79a8', '#6c5ce7'];
 
-      container.innerHTML = '';
-      numeros.forEach((num, index) => {
+      // Mezclar los números aleatoriamente
+      numerosArray = numeros.map((num, index) => ({
+        emoji: num,
+        nombre: nombres[index],
+        color: colores[index],
+        valor: index + 1
+      }));
+
+      // Mezclar array
+      for (let i = numerosArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [numerosArray[i], numerosArray[j]] = [numerosArray[j], numerosArray[i]];
+      }
+
+      container.innerHTML = '<p style="text-align: center; margin-bottom: 20px; font-size: 1.1rem; color: #667eea;">Arrastra los números para ordenarlos del 1 al 10</p>';
+
+      numerosArray.forEach((numero, index) => {
         const card = document.createElement('div');
+        card.className = 'numero-card';
+        card.draggable = true;
+        card.dataset.index = index;
+        card.dataset.valor = numero.valor;
         card.style.cssText = `
-          background: ${colores[index]};
+          background: ${numero.color};
           padding: 25px;
           border-radius: 15px;
           text-align: center;
-          cursor: pointer;
+          cursor: move;
           transition: all 0.3s;
           box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         `;
         card.innerHTML = `
-          <div style="font-size: 4rem;">${num}</div>
-          <div style="color: white; font-weight: 700; margin-top: 10px;">${nombres[index]}</div>
+          <div style="font-size: 4rem;">${numero.emoji}</div>
+          <div style="color: white; font-weight: 700; margin-top: 10px;">${numero.nombre}</div>
         `;
+
+        // Eventos de arrastrar
+        card.addEventListener('dragstart', (e) => {
+          draggedNumber = card;
+          card.style.opacity = '0.5';
+          speakText(`Arrastrando número ${numero.nombre}`);
+        });
+
+        card.addEventListener('dragend', (e) => {
+          card.style.opacity = '1';
+        });
+
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          card.style.transform = 'scale(1.05)';
+        });
+
+        card.addEventListener('dragleave', (e) => {
+          card.style.transform = 'scale(1)';
+        });
+
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          if (draggedNumber !== card) {
+            // Intercambiar posiciones
+            const draggedIndex = parseInt(draggedNumber.dataset.index);
+            const targetIndex = parseInt(card.dataset.index);
+
+            [numerosArray[draggedIndex], numerosArray[targetIndex]] =
+            [numerosArray[targetIndex], numerosArray[draggedIndex]];
+
+            initNumerosGame(); // Refrescar
+            checkNumerosOrder();
+          }
+          card.style.transform = 'scale(1)';
+        });
+
         card.onclick = () => {
-          speakText(`Número ${nombres[index]}`);
+          speakText(`Número ${numero.nombre}`);
           card.style.transform = 'scale(1.2)';
           setTimeout(() => {
             card.style.transform = 'scale(1)';
           }, 300);
         };
+
         container.appendChild(card);
       });
     }
 
+    function checkNumerosOrder() {
+      const isOrdered = numerosArray.every((num, index) => num.valor === index + 1);
+      if (isOrdered) {
+        speakText('¡Excelente! Has ordenado todos los números correctamente del uno al diez');
+        setTimeout(() => {
+          alert('🎉 ¡Felicidades! Has completado el juego de números correctamente');
+        }, 500);
+      }
+    }
+
     // Juego de Rompecabezas
+    let puzzlePieces = [];
+    let draggedPuzzlePiece = null;
+
     function initRompecabezasGame() {
       const container = document.getElementById('rompecabezas-container');
+
+      // Definir las piezas del rompecabezas
+      puzzlePieces = [
+        { emoji: '❤️', color: 'linear-gradient(135deg, #FF6B6B, #C06C84)', correctPos: 0 },
+        { emoji: '💚', color: 'linear-gradient(135deg, #4ECDC4, #44A08D)', correctPos: 1 },
+        { emoji: '💛', color: 'linear-gradient(135deg, #FFD93D, #F6B93B)', correctPos: 2 },
+        { emoji: '💜', color: 'linear-gradient(135deg, #9B59B6, #8E44AD)', correctPos: 3 }
+      ];
+
+      // Mezclar las piezas aleatoriamente
+      for (let i = puzzlePieces.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [puzzlePieces[i], puzzlePieces[j]] = [puzzlePieces[j], puzzlePieces[i]];
+      }
+
       container.innerHTML = `
         <div style="text-align: center;">
           <p style="font-size: 1.2rem; margin-bottom: 30px;">
-            Arrastra las piezas para completar la imagen del corazón
+            Arrastra las piezas para completar la imagen de corazones inclusivos en el orden correcto
           </p>
-          <div id="puzzle-area" style="display: grid; grid-template-columns: repeat(2, 200px); gap: 10px; justify-content: center;">
-            <div class="puzzle-piece" data-position="0" style="background: linear-gradient(135deg, #FF6B6B, #C06C84); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
-              ❤️
-            </div>
-            <div class="puzzle-piece" data-position="1" style="background: linear-gradient(135deg, #4ECDC4, #44A08D); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
-              💚
-            </div>
-            <div class="puzzle-piece" data-position="2" style="background: linear-gradient(135deg, #FFD93D, #F6B93B); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
-              💛
-            </div>
-            <div class="puzzle-piece" data-position="3" style="background: linear-gradient(135deg, #9B59B6, #8E44AD); height: 200px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 4rem; cursor: move; border: 3px solid white;">
-              💜
-            </div>
+          <p style="font-size: 1rem; margin-bottom: 20px; color: #667eea;">
+            Orden correcto: ❤️ 💚 💛 💜
+          </p>
+          <div id="puzzle-area" style="display: grid; grid-template-columns: repeat(2, 200px); gap: 10px; justify-content: center; margin-bottom: 30px;">
           </div>
-          <button class="audio-btn" onclick="checkPuzzleComplete()" style="margin-top: 30px;">
+          <button class="audio-btn" onclick="checkPuzzleComplete()" style="margin-top: 10px;">
             ✅ Verificar Rompecabezas
           </button>
         </div>
       `;
 
-      // Simple drag and drop
-      const pieces = document.querySelectorAll('.puzzle-piece');
-      pieces.forEach(piece => {
-        piece.addEventListener('click', () => {
-          speakText('Pieza del rompecabezas');
+      const puzzleArea = container.querySelector('#puzzle-area');
+
+      // Crear las piezas con drag and drop
+      puzzlePieces.forEach((piece, index) => {
+        const pieceDiv = document.createElement('div');
+        pieceDiv.className = 'puzzle-piece';
+        pieceDiv.draggable = true;
+        pieceDiv.dataset.index = index;
+        pieceDiv.dataset.correctPos = piece.correctPos;
+        pieceDiv.style.cssText = `
+          background: ${piece.color};
+          height: 200px;
+          border-radius: 15px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 4rem;
+          cursor: move;
+          border: 3px solid white;
+          transition: all 0.3s;
+        `;
+        pieceDiv.innerHTML = piece.emoji;
+
+        // Eventos de arrastrar
+        pieceDiv.addEventListener('dragstart', (e) => {
+          draggedPuzzlePiece = pieceDiv;
+          pieceDiv.style.opacity = '0.5';
+          speakText(`Arrastrando pieza ${piece.emoji}`);
         });
+
+        pieceDiv.addEventListener('dragend', (e) => {
+          pieceDiv.style.opacity = '1';
+        });
+
+        pieceDiv.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          pieceDiv.style.transform = 'scale(1.05)';
+          pieceDiv.style.border = '3px solid #FFD700';
+        });
+
+        pieceDiv.addEventListener('dragleave', (e) => {
+          pieceDiv.style.transform = 'scale(1)';
+          pieceDiv.style.border = '3px solid white';
+        });
+
+        pieceDiv.addEventListener('drop', (e) => {
+          e.preventDefault();
+          if (draggedPuzzlePiece !== pieceDiv) {
+            // Intercambiar posiciones
+            const draggedIndex = parseInt(draggedPuzzlePiece.dataset.index);
+            const targetIndex = parseInt(pieceDiv.dataset.index);
+
+            [puzzlePieces[draggedIndex], puzzlePieces[targetIndex]] =
+            [puzzlePieces[targetIndex], puzzlePieces[draggedIndex]];
+
+            initRompecabezasGame(); // Refrescar
+            speakText('Piezas intercambiadas');
+          }
+          pieceDiv.style.transform = 'scale(1)';
+          pieceDiv.style.border = '3px solid white';
+        });
+
+        pieceDiv.addEventListener('click', () => {
+          speakText(`Pieza del rompecabezas ${piece.emoji}`);
+          pieceDiv.style.transform = 'scale(1.1) rotate(5deg)';
+          setTimeout(() => {
+            pieceDiv.style.transform = 'scale(1) rotate(0deg)';
+          }, 300);
+        });
+
+        puzzleArea.appendChild(pieceDiv);
       });
     }
 
     function checkPuzzleComplete() {
-      speakText('¡Excelente trabajo! Has completado el rompecabezas de corazones inclusivos');
-      // Animación de celebración
-      const pieces = document.querySelectorAll('.puzzle-piece');
-      pieces.forEach((piece, index) => {
-        setTimeout(() => {
-          piece.style.transform = 'scale(1.1) rotate(5deg)';
+      // Verificar si las piezas están en el orden correcto
+      const isComplete = puzzlePieces.every((piece, index) => piece.correctPos === index);
+
+      if (isComplete) {
+        speakText('¡Excelente trabajo! Has completado el rompecabezas de corazones inclusivos correctamente');
+
+        // Animación de celebración
+        const pieces = document.querySelectorAll('.puzzle-piece');
+        pieces.forEach((piece, index) => {
           setTimeout(() => {
-            piece.style.transform = 'scale(1) rotate(0deg)';
-          }, 300);
-        }, index * 100);
-      });
+            piece.style.transform = 'scale(1.1) rotate(5deg)';
+            piece.style.border = '3px solid #32CD32';
+            piece.style.boxShadow = '0 0 20px rgba(50, 205, 50, 0.6)';
+            setTimeout(() => {
+              piece.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+          }, index * 100);
+        });
+
+        setTimeout(() => {
+          alert('🎉 ¡Felicidades! Has completado el rompecabezas de corazones inclusivos correctamente');
+        }, 800);
+      } else {
+        speakText('Aún no está completo. Sigue intentando organizar las piezas en el orden correcto');
+        alert('⚠️ Aún no está completo. Organiza las piezas en el orden: ❤️ 💚 💛 💜');
+      }
     }
 
     // Control del Modal de Video
