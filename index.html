@@ -1369,118 +1369,155 @@
 
     function initNumerosGame() {
       const container = document.getElementById('numeros-container');
-      const numeros = ['1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟'];
-      const nombres = ['uno', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 'siete', 'ocho', 'nueve', 'diez'];
-      const colores = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#9B59B6', '#FF6B9D', '#FFA502', '#26de81', '#4b7bec', '#fd79a8', '#6c5ce7'];
+      const numeros = [
+        { emoji: '8️⃣', nombre: 'ocho', numero: 8, color: '#4b7bec' },
+        { emoji: '3️⃣', nombre: 'tres', numero: 3, color: '#FFD93D' },
+        { emoji: '9️⃣', nombre: 'nueve', numero: 9, color: '#fd79a8' },
+        { emoji: '5️⃣', nombre: 'cinco', numero: 5, color: '#FF6B9D' },
+        { emoji: '6️⃣', nombre: 'seis', numero: 6, color: '#FFA502' },
+        { emoji: '4️⃣', nombre: 'cuatro', numero: 4, color: '#9B59B6' },
+        { emoji: '2️⃣', nombre: 'dos', numero: 2, color: '#4ECDC4' },
+        { emoji: '🔟', nombre: 'diez', numero: 10, color: '#6c5ce7' },
+        { emoji: '1️⃣', nombre: 'uno', numero: 1, color: '#FF6B6B' },
+        { emoji: '7️⃣', nombre: 'siete', numero: 7, color: '#26de81' }
+      ];
 
-      // Mezclar los números aleatoriamente
-      numerosArray = numeros.map((num, index) => ({
-        emoji: num,
-        nombre: nombres[index],
-        color: colores[index],
-        valor: index + 1
-      }));
-
-      // Mezclar array
-      for (let i = numerosArray.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [numerosArray[i], numerosArray[j]] = [numerosArray[j], numerosArray[i]];
-      }
+      // Desordenar los números
+      const numerosDesordenados = [...numeros].sort(() => Math.random() - 0.5);
 
       container.innerHTML = `
-        <div style="text-align: center; margin-bottom: 30px;">
-          <p style="font-size: 1.2rem; font-weight: 700; color: #667eea; margin-bottom: 15px;">
-            🎯 Ordena los números del 1 al 10
-          </p>
-          <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 15px; max-width: 500px; margin: 0 auto;">
-            <p style="font-size: 1rem; margin-bottom: 10px;">
-              📱 <strong>Cómo jugar:</strong>
+        <div style="text-align: center;">
+          <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px;">
+            ${numerosDesordenados.map((num, index) => `
+              <div class="numero-draggable" draggable="true" data-numero="${num.numero}" data-nombre="${num.nombre}" data-id="${index}"
+                   style="background: ${num.color}; width: 110px; height: 110px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
+                <div style="font-size: 3.5rem;">${num.emoji}</div>
+                <div style="color: white; font-weight: 700; font-size: 0.9rem; margin-top: 5px;">${num.nombre}</div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div style="margin: 30px 0;">
+            <p style="font-size: 1.2rem; font-weight: 700; color: #667eea;">
+              Organiza los números en orden (1-10):
             </p>
-            <ol style="text-align: left; margin: 0 auto; max-width: 400px; line-height: 1.8;">
-              <li>Haz clic y <strong>mantén presionado</strong> un número</li>
-              <li><strong>Arrastra</strong> el número sobre otro número</li>
-              <li><strong>Suelta</strong> para intercambiar posiciones</li>
-              <li>Repite hasta ordenarlos del 1️⃣ al 🔟</li>
-            </ol>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px;">
+            ${[1,2,3,4,5,6,7,8,9,10].map(pos => `
+              <div class="numero-drop-zone" data-position="${pos}"
+                   style="width: 90px; height: 90px; border: 3px dashed #667eea; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(102, 126, 234, 0.1); transition: all 0.3s;">
+                <div style="font-size: 2rem; color: #667eea; font-weight: 700;">${pos}</div>
+              </div>
+            `).join('')}
           </div>
         </div>
       `;
 
-      numerosArray.forEach((numero, index) => {
-        const card = document.createElement('div');
-        card.className = 'numero-card';
-        card.draggable = true;
-        card.dataset.index = index;
-        card.dataset.valor = numero.valor;
-        card.style.cssText = `
-          background: ${numero.color};
-          padding: 25px;
-          border-radius: 15px;
-          text-align: center;
-          cursor: move;
-          transition: all 0.3s;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        `;
-        card.innerHTML = `
-          <div style="font-size: 4rem;">${numero.emoji}</div>
-          <div style="color: white; font-weight: 700; margin-top: 10px;">${numero.nombre}</div>
-        `;
+      // Implementar drag and drop para números
+      const draggables = document.querySelectorAll('.numero-draggable');
+      const dropZones = document.querySelectorAll('.numero-drop-zone');
 
-        // Eventos de arrastrar
-        card.addEventListener('dragstart', (e) => {
-          draggedNumber = card;
-          card.style.opacity = '0.5';
-          speakText(`Arrastrando número ${numero.nombre}`);
+      draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', e.target.dataset.id);
+          e.dataTransfer.setData('numero', e.target.dataset.numero);
+          e.dataTransfer.setData('nombre', e.target.dataset.nombre);
+          e.target.style.opacity = '0.5';
+          speakText(`Número ${e.target.dataset.nombre} seleccionado`);
         });
 
-        card.addEventListener('dragend', (e) => {
-          card.style.opacity = '1';
+        draggable.addEventListener('dragend', (e) => {
+          e.target.style.opacity = '1';
         });
 
-        card.addEventListener('dragover', (e) => {
+        // Click para escuchar el número
+        draggable.addEventListener('click', () => {
+          speakText(`Número ${draggable.dataset.nombre}`);
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
           e.preventDefault();
-          card.style.transform = 'scale(1.05)';
+          zone.style.background = 'rgba(102, 126, 234, 0.3)';
+          zone.style.transform = 'scale(1.05)';
         });
 
-        card.addEventListener('dragleave', (e) => {
-          card.style.transform = 'scale(1)';
+        zone.addEventListener('dragleave', (e) => {
+          zone.style.background = 'rgba(102, 126, 234, 0.1)';
+          zone.style.transform = 'scale(1)';
         });
 
-        card.addEventListener('drop', (e) => {
+        zone.addEventListener('drop', (e) => {
           e.preventDefault();
-          if (draggedNumber !== card) {
-            // Intercambiar posiciones
-            const draggedIndex = parseInt(draggedNumber.dataset.index);
-            const targetIndex = parseInt(card.dataset.index);
+          zone.style.background = 'rgba(102, 126, 234, 0.1)';
+          zone.style.transform = 'scale(1)';
 
-            [numerosArray[draggedIndex], numerosArray[targetIndex]] =
-            [numerosArray[targetIndex], numerosArray[draggedIndex]];
+          const pieceId = e.dataTransfer.getData('text/plain');
+          const piece = document.querySelector(`.numero-draggable[data-id="${pieceId}"]`);
 
-            initNumerosGame(); // Refrescar
-            checkNumerosOrder();
+          if (piece) {
+            // Si ya hay un número en la zona, no hacer nada (mantener el primero)
+            const existingPiece = zone.querySelector('.numero-draggable');
+            if (existingPiece) {
+              speakText('Esta posición ya está ocupada');
+              return;
+            }
+
+            // Colocar el nuevo número
+            const originalParent = piece.parentNode;
+            zone.appendChild(piece);
+            piece.style.width = '100%';
+            piece.style.height = '100%';
+            piece.style.margin = '0';
+
+            speakText(`Número ${piece.dataset.nombre} colocado en posición ${zone.dataset.position}`);
+
+            // Verificar automáticamente si está completo
+            setTimeout(checkNumerosComplete, 300);
           }
-          card.style.transform = 'scale(1)';
         });
-
-        card.onclick = () => {
-          speakText(`Número ${numero.nombre}`);
-          card.style.transform = 'scale(1.2)';
-          setTimeout(() => {
-            card.style.transform = 'scale(1)';
-          }, 300);
-        };
-
-        container.appendChild(card);
       });
     }
 
-    function checkNumerosOrder() {
-      const isOrdered = numerosArray.every((num, index) => num.valor === index + 1);
-      if (isOrdered) {
-        speakText('¡Excelente! Has ordenado todos los números correctamente del uno al diez');
+    function checkNumerosComplete() {
+      const dropZones = document.querySelectorAll('.numero-drop-zone');
+      let allFilled = true;
+      let allCorrect = true;
+
+      dropZones.forEach((zone) => {
+        const piece = zone.querySelector('.numero-draggable');
+        if (!piece) {
+          allFilled = false;
+        } else {
+          const numeroActual = parseInt(piece.dataset.numero);
+          const posicionCorrecta = parseInt(zone.dataset.position);
+
+          if (numeroActual !== posicionCorrecta) {
+            allCorrect = false;
+          }
+        }
+      });
+
+      if (allFilled && allCorrect) {
+        speakText('¡Excelente trabajo! Has ordenado todos los números correctamente del 1 al 10');
+
+        // Animación de celebración
+        dropZones.forEach((zone, index) => {
+          setTimeout(() => {
+            zone.style.border = '3px solid #26de81';
+            zone.style.background = 'rgba(38, 222, 129, 0.2)';
+            zone.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+              zone.style.transform = 'scale(1)';
+            }, 300);
+          }, index * 100);
+        });
+
         setTimeout(() => {
           alert('🎉 ¡Felicidades! Has completado el juego de números correctamente');
-        }, 500);
+        }, 1000);
       }
     }
 
