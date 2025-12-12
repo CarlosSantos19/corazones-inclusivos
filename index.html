@@ -1803,14 +1803,35 @@
         pieceDiv.addEventListener('drop', (e) => {
           e.preventDefault();
           if (draggedPuzzlePiece !== pieceDiv) {
-            // Intercambiar posiciones
+            // Intercambiar posiciones en el array
             const draggedIndex = parseInt(draggedPuzzlePiece.dataset.index);
             const targetIndex = parseInt(pieceDiv.dataset.index);
 
+            // Intercambiar las piezas en el array
             [puzzlePieces[draggedIndex], puzzlePieces[targetIndex]] =
             [puzzlePieces[targetIndex], puzzlePieces[draggedIndex]];
 
-            initRompecabezasGame(); // Refrescar
+            // Intercambiar visualmente los elementos en el DOM
+            const draggedParent = draggedPuzzlePiece.parentNode;
+            const targetParent = pieceDiv.parentNode;
+            const draggedNextSibling = draggedPuzzlePiece.nextSibling;
+            const targetNextSibling = pieceDiv.nextSibling;
+
+            // Intercambiar índices
+            const tempIndex = draggedPuzzlePiece.dataset.index;
+            draggedPuzzlePiece.dataset.index = pieceDiv.dataset.index;
+            pieceDiv.dataset.index = tempIndex;
+
+            // Mover los elementos en el DOM
+            if (draggedNextSibling === pieceDiv) {
+              targetParent.insertBefore(pieceDiv, draggedPuzzlePiece);
+            } else if (targetNextSibling === draggedPuzzlePiece) {
+              draggedParent.insertBefore(draggedPuzzlePiece, pieceDiv);
+            } else {
+              draggedParent.insertBefore(pieceDiv, draggedNextSibling);
+              targetParent.insertBefore(draggedPuzzlePiece, targetNextSibling);
+            }
+
             speakText('Piezas intercambiadas');
           }
           pieceDiv.style.transform = 'scale(1)';
