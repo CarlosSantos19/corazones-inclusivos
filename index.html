@@ -1811,26 +1811,18 @@
             [puzzlePieces[draggedIndex], puzzlePieces[targetIndex]] =
             [puzzlePieces[targetIndex], puzzlePieces[draggedIndex]];
 
-            // Intercambiar visualmente los elementos en el DOM
-            const draggedParent = draggedPuzzlePiece.parentNode;
-            const targetParent = pieceDiv.parentNode;
-            const draggedNextSibling = draggedPuzzlePiece.nextSibling;
-            const targetNextSibling = pieceDiv.nextSibling;
+            // Intercambiar solo el contenido visual (emoji, color, etc.)
+            const tempEmoji = draggedPuzzlePiece.innerHTML;
+            const tempBackground = draggedPuzzlePiece.style.background;
+            const tempCorrectPos = draggedPuzzlePiece.dataset.correctPos;
 
-            // Intercambiar índices
-            const tempIndex = draggedPuzzlePiece.dataset.index;
-            draggedPuzzlePiece.dataset.index = pieceDiv.dataset.index;
-            pieceDiv.dataset.index = tempIndex;
+            draggedPuzzlePiece.innerHTML = pieceDiv.innerHTML;
+            draggedPuzzlePiece.style.background = pieceDiv.style.background;
+            draggedPuzzlePiece.dataset.correctPos = pieceDiv.dataset.correctPos;
 
-            // Mover los elementos en el DOM
-            if (draggedNextSibling === pieceDiv) {
-              targetParent.insertBefore(pieceDiv, draggedPuzzlePiece);
-            } else if (targetNextSibling === draggedPuzzlePiece) {
-              draggedParent.insertBefore(draggedPuzzlePiece, pieceDiv);
-            } else {
-              draggedParent.insertBefore(pieceDiv, draggedNextSibling);
-              targetParent.insertBefore(draggedPuzzlePiece, targetNextSibling);
-            }
+            pieceDiv.innerHTML = tempEmoji;
+            pieceDiv.style.background = tempBackground;
+            pieceDiv.dataset.correctPos = tempCorrectPos;
 
             speakText('Piezas intercambiadas');
           }
